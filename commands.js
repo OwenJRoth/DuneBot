@@ -139,7 +139,27 @@ const PICK_OPERATOR_COMMAND = {
   contexts: [0, 1, 2],
 };
 
-const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND, R6STATS_COMMAND, R6STATCOMPARE_COMMAND,ONE_VS_ONE_COMMAND, PICK_OPERATOR_COMMAND, PICK_CHALLENGE_COMMAND];
+const PICK_SIGHT_COMMAND = {
+  name: "randomsight",
+  description: "Get a random sight based on the zoom type",
+  options: [
+    {
+      name: "type",
+      description: "The type of zoom (normal, acog, dmr)",
+      type: 3, // STRING
+      required: true,
+      choices: [
+        { name: "Normal", value: "normal" },
+        { name: "ACOG", value: "acog" },
+        { name: "DMR", value: "dmr" }
+      ]
+    }
+  ]
+}
+
+const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND, R6STATS_COMMAND, R6STATCOMPARE_COMMAND,ONE_VS_ONE_COMMAND, PICK_OPERATOR_COMMAND, PICK_CHALLENGE_COMMAND,
+  PICK_SIGHT_COMMAND
+];
 
 // Register all commands
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);

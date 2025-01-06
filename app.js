@@ -42,6 +42,53 @@ const CHALLENGES = [
   'You Dodged a Challenge This Round'
 ];
 
+const NORMALZOOM = [
+  'Iron Sights',
+  'Holo A',
+  'Holo B',
+  'Holo C',
+  'Holo D',
+  'Red Dot A',
+  'Red Dot B',
+  'Red Dot C',
+  'Reflex A',
+  'Reflex B'
+]
+
+const ACOGZOOM = [
+  'Iron Sights',
+  'Holo A',
+  'Holo B',
+  'Holo C',
+  'Holo D',
+  'Red Dot A',
+  'Red Dot B',
+  'Red Dot C',
+  'Reflex A',
+  'Reflex B',
+  '2.5x A',
+  '2.5x B',
+  '2.5x C'
+]
+
+const DMRZOOM = [
+  'Iron Sights',
+  'Holo A',
+  'Holo B',
+  'Holo C',
+  'Holo D',
+  'Red Dot A',
+  'Red Dot B',
+  'Red Dot C',
+  'Reflex A',
+  'Reflex B',
+  '2.5x A',
+  '2.5x B',
+  '2.5x C',
+  'Telescopic A',
+  'Telescopic B'
+]
+
 // New pickchallenge command
 const getRandomChallenge = () => {
   const randomChallenge = CHALLENGES[Math.floor(Math.random() * CHALLENGES.length)];
@@ -166,6 +213,33 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
           content: `Your challenge is: **${challenge}**`,
+        },
+      });
+    }
+
+    if (name === 'randomsight') {
+      const option = data.options.find((opt) => opt.name === 'type')?.value;
+    
+      let zoomList;
+      if (option === 'normal') {
+        zoomList = NORMALZOOM;
+      } else if (option === 'acog') {
+        zoomList = ACOGZOOM;
+      } else if (option === 'dmr') {
+        zoomList = DMRZOOM;
+      } else {
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: { content: 'Invalid type. Please choose between "normal", "acog", or "dmr".' },
+        });
+      }
+    
+      const randomSight = zoomList[Math.floor(Math.random() * zoomList.length)];
+    
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: `Your random sight for ${option.toUpperCase()} is: **${randomSight}**`,
         },
       });
     }
