@@ -8,10 +8,34 @@ import {
   ButtonStyleTypes,
   verifyKeyMiddleware,
 } from 'discord-interactions';
+import axios from 'axios';
 import { getRandomEmoji, DiscordRequest } from './utils.js';
 import { getShuffledOptions, getResult } from './game.js';
-import { getR6Stats } from './r6stats.js'
-import './commands.js';
+
+// Utility function moved from r6stats.js
+const getR6Stats = async (username) => {
+  const url = `https://api.tracker.gg/api/v2/r6siege/standard/profile/ubi/${username}`;
+
+  try {
+    const { data } = await axios.get(url);
+
+    const segments = data.data?.segments || [];
+    const overview = segments.find((segment) => segment.type === 'overview');
+    const stats = overview?.stats || {};
+
+    return {
+      maxRank: stats.rankedRating?.value || 'N/A',
+      lifetimeKD: stats.kd?.displayValue || 'N/A',
+      currentKD: stats.seasonalKd?.displayValue || 'N/A',
+      currentRank: stats.seasonalRank?.value || 'N/A',
+    };
+  } catch (error) {
+    if (error.response) {
+      throw error;
+    }
+    throw new Error(`Failed to fetch stats: ${error.message}`);
+  }
+};
 
 // Create an express app
 const app = express();
