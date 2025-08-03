@@ -29,7 +29,7 @@ const getR6Stats = async (username) => {
       currentKD: stats.seasonalKd?.displayValue || 'N/A',
       currentRank: stats.seasonalRank?.value || 'N/A',
     };
-  } catch (error) catch (err) {
+  } catch (err) {
   if (err.response) {
     switch (err.response.status) {
       case 404:
