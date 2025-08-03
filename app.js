@@ -29,12 +29,29 @@ const getR6Stats = async (username) => {
       currentKD: stats.seasonalKd?.displayValue || 'N/A',
       currentRank: stats.seasonalRank?.value || 'N/A',
     };
-  } catch (error) {
-    if (error.response) {
-      throw error;
+  } catch (error) catch (err) {
+  if (err.response) {
+    switch (err.response.status) {
+      case 404:
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: { content: 'Username not found. Please check username.' },
+        });
+      case 429:
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: { content: 'Rate limited by the server. Please wait a moment.' },
+        });
     }
-    throw new Error(`Failed to fetch stats: ${error.message}`);
   }
+
+  // Default fallback error
+  return res.send({
+    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+    data: { content: `Unexpected error: ${err.message}` },
+  });
+}
+
 };
 
 // Create an express app
