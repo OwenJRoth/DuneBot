@@ -246,6 +246,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
     }
 
     if (name === 'r6stats') {
+      console.log("Trying to get r6 Stats")
       const username = data.options.find((opt) => opt.name === 'username')?.value;
       if (!username) {
         return res.send({
