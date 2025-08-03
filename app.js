@@ -11,6 +11,7 @@ import {
 import { getRandomEmoji, DiscordRequest } from './utils.js';
 import { getShuffledOptions, getResult } from './game.js';
 import { getR6Stats } from './r6stats.js'
+import './commands.js';
 
 // Create an express app
 const app = express();
