@@ -271,12 +271,18 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
         });
       } catch (err) {
         if(err.response){
-          switch(err.response.status){
-            case 404:
-              return 'Username not found. Please check username';
-            case 429:
-              return 'Server blocked request. Please wait before trying again'
-          }
+          switch (err.response.status) {
+      case 404:
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: { content: 'Username not found. Please check the username.' },
+        });
+      case 429:
+        return res.send({
+          type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+          data: { content: 'Rate limited. Please wait before trying again.' },
+        });
+    }
         }
       }
     }
